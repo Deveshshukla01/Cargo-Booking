@@ -57,10 +57,10 @@ router.post('/', async (req, res) => {
       });
     }
 
-    // Optional: generate a unique refId
-    const refId = `REF-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+    // Generate unique ref_id
+    const ref_id = `REF-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
-    // Validate flights
+    // Validate flightIds if provided
     if (flightIds && Array.isArray(flightIds) && flightIds.length > 0) {
       const Flight = require('../models/Flight');
       const validFlights = await Flight.find({ flightId: { $in: flightIds } });
@@ -70,29 +70,29 @@ router.post('/', async (req, res) => {
     }
 
     const booking = new Booking({
-      refId,
+      ref_id,
       origin,
       destination,
       pieces: parseInt(pieces),
       weightKg: parseFloat(weightKg),
-      status: "BOOKED", // default status
+      status: 'BOOKED',
       flightIds: flightIds || [],
-      timeline: [],
+      timeline: []
     });
 
     await booking.save();
 
-    console.log(`✅ New booking created: ${booking.refId}`);
+    console.log(`✅ New booking created: ${booking.ref_id}`);
     res.status(201).json(booking);
   } catch (error) {
     console.error('🔥 Error creating booking:', error);
     res.status(500).json({ 
       error: 'Failed to create booking',
-      details: error.message,
-      stack: error.stack
+      details: error.message
     });
   }
 });
+
 
 
 // Get all bookings
