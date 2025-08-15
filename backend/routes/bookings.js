@@ -2,48 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Booking = require('../models/Booking');
 
-// Create a new booking
-// router.post('/', async (req, res) => {
-//   try {
-//     const { origin, destination, pieces, weightKg, flightIds } = req.body;
-    
-//     if (!origin || !destination || !pieces || !weightKg) {
-//       return res.status(400).json({ 
-//         error: 'Missing required fields: origin, destination, pieces, weightKg' 
-//       });
-//     }
-
-//     // Validate flightIds if provided
-//     if (flightIds && Array.isArray(flightIds) && flightIds.length > 0) {
-//       const Flight = require('../models/Flight');
-//       const validFlights = await Flight.find({ 
-//         flightId: { $in: flightIds } 
-//       });
-      
-//       if (validFlights.length !== flightIds.length) {
-//         return res.status(400).json({ 
-//           error: 'One or more flight IDs are invalid' 
-//         });
-//       }
-//     }
-
-//     const booking = new Booking({
-//       origin,
-//       destination,
-//       pieces: parseInt(pieces),
-//       weightKg: parseFloat(weightKg),
-//       flightIds: flightIds || []
-//     });
-
-//     await booking.save();
-    
-//     console.log(`New booking created: ${booking.refId}`);
-//     res.status(201).json(booking);
-//   } catch (error) {
-//     console.error('Error creating booking:', error);
-//     res.status(500).json({ error: 'Failed to create booking' });
-//   }
-// });
 
 router.post('/', async (req, res) => {
   try {
@@ -292,16 +250,5 @@ router.patch('/:refId/cancel', async (req, res) => {
     res.status(500).json({ error: 'Failed to cancel booking' });
   }
 });
-
-// Get all bookings (for admin/testing)
-// router.get('/', async (req, res) => {
-//   try {
-//     const bookings = await Booking.find().sort({ createdAt: -1 }).limit(50);
-//     res.json(bookings);
-//   } catch (error) {
-//     console.error('Error fetching bookings:', error);
-//     res.status(500).json({ error: 'Failed to fetch bookings' });
-//   }
-// });
 
 module.exports = router;
