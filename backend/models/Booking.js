@@ -30,7 +30,9 @@ const bookingSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    default: () => `CRG${Date.now()}${Math.floor(Math.random() * 1000)}`
+    default: function() {
+      return `CRG${Date.now()}${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`;
+    }
   },
   origin: {
     type: String,
