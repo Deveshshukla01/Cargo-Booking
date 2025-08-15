@@ -244,14 +244,14 @@ router.patch('/:refId/cancel', async (req, res) => {
 });
 
 // Get all bookings (for admin/testing)
-router.get('/', async (req, res) => {
-  try {
-    const bookings = await Booking.find().sort({ createdAt: -1 }).limit(50);
-    res.json(bookings);
-  } catch (error) {
-    console.error('Error fetching bookings:', error);
-    res.status(500).json({ error: 'Failed to fetch bookings' });
-  }
-});
+// router.get('/', async (req, res) => {
+//   try {
+//     const bookings = await Booking.find().sort({ createdAt: -1 }).limit(50);
+//     res.json(bookings);
+//   } catch (error) {
+//     console.error('Error fetching bookings:', error);
+//     res.status(500).json({ error: 'Failed to fetch bookings' });
+//   }
+// });
 
 module.exports = router;
