@@ -3,47 +3,97 @@ const router = express.Router();
 const Booking = require('../models/Booking');
 
 // Create a new booking
+// router.post('/', async (req, res) => {
+//   try {
+//     const { origin, destination, pieces, weightKg, flightIds } = req.body;
+    
+//     if (!origin || !destination || !pieces || !weightKg) {
+//       return res.status(400).json({ 
+//         error: 'Missing required fields: origin, destination, pieces, weightKg' 
+//       });
+//     }
+
+//     // Validate flightIds if provided
+//     if (flightIds && Array.isArray(flightIds) && flightIds.length > 0) {
+//       const Flight = require('../models/Flight');
+//       const validFlights = await Flight.find({ 
+//         flightId: { $in: flightIds } 
+//       });
+      
+//       if (validFlights.length !== flightIds.length) {
+//         return res.status(400).json({ 
+//           error: 'One or more flight IDs are invalid' 
+//         });
+//       }
+//     }
+
+//     const booking = new Booking({
+//       origin,
+//       destination,
+//       pieces: parseInt(pieces),
+//       weightKg: parseFloat(weightKg),
+//       flightIds: flightIds || []
+//     });
+
+//     await booking.save();
+    
+//     console.log(`New booking created: ${booking.refId}`);
+//     res.status(201).json(booking);
+//   } catch (error) {
+//     console.error('Error creating booking:', error);
+//     res.status(500).json({ error: 'Failed to create booking' });
+//   }
+// });
+
 router.post('/', async (req, res) => {
   try {
+    console.log("Incoming booking request:", req.body);
+
     const { origin, destination, pieces, weightKg, flightIds } = req.body;
-    
+
     if (!origin || !destination || !pieces || !weightKg) {
       return res.status(400).json({ 
         error: 'Missing required fields: origin, destination, pieces, weightKg' 
       });
     }
 
-    // Validate flightIds if provided
+    // Optional: generate a unique refId
+    const refId = `REF-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+
+    // Validate flights
     if (flightIds && Array.isArray(flightIds) && flightIds.length > 0) {
       const Flight = require('../models/Flight');
-      const validFlights = await Flight.find({ 
-        flightId: { $in: flightIds } 
-      });
-      
+      const validFlights = await Flight.find({ flightId: { $in: flightIds } });
       if (validFlights.length !== flightIds.length) {
-        return res.status(400).json({ 
-          error: 'One or more flight IDs are invalid' 
-        });
+        return res.status(400).json({ error: 'One or more flight IDs are invalid' });
       }
     }
 
     const booking = new Booking({
+      refId,
       origin,
       destination,
       pieces: parseInt(pieces),
       weightKg: parseFloat(weightKg),
-      flightIds: flightIds || []
+      status: "BOOKED", // default status
+      flightIds: flightIds || [],
+      timeline: [],
     });
 
     await booking.save();
-    
-    console.log(`New booking created: ${booking.refId}`);
+
+    console.log(`✅ New booking created: ${booking.refId}`);
     res.status(201).json(booking);
   } catch (error) {
-    console.error('Error creating booking:', error);
-    res.status(500).json({ error: 'Failed to create booking' });
+    console.error('🔥 Error creating booking:', error);
+    res.status(500).json({ 
+      error: 'Failed to create booking',
+      details: error.message,
+      stack: error.stack
+    });
   }
 });
+
 
 // Get all bookings
 router.get('/', async (req, res) => {
