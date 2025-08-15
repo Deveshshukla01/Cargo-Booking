@@ -122,7 +122,7 @@ A simple MERN stack application for managing air cargo bookings and tracking the
 
 ### Access the Application
 - Frontend: http://localhost:5173
-- Backend API: http://localhost:5000/api
+- Backend API: https://cargo-booking-backend.vercel.app/api
 
 ## Performance Optimizations
 

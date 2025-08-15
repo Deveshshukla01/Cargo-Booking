@@ -13,7 +13,7 @@ const BookingsList = () => {
   const fetchAllBookings = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/api/bookings');
+      const response = await axios.get('https://cargo-booking-backend.vercel.app/api/bookings');
       setBookings(response.data);
       setError('');
     } catch (error) {

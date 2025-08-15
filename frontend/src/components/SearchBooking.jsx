@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import axios from 'axios'
 
-const API_BASE_URL = 'http://localhost:5000/api'
+const API_BASE_URL = 'https://cargo-booking-backend.vercel.app/api'
 
 function SearchBooking({ onBookingFound }) {
   const [refId, setRefId] = useState('')
